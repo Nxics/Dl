@@ -1,0 +1,4 @@
+-r requirements.txt
+
+ipykernel>=7,<8
+pytest>=8,<10

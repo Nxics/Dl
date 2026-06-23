@@ -1,0 +1,22 @@
+# Python
+__pycache__/
+*.py[cod]
+*.egg-info/
+.pytest_cache/
+.mypy_cache/
+.ruff_cache/
+
+# Virtual environments
+.venv/
+venv/
+.torch/
+
+# Project data and generated artifacts
+DATA/
+checkpoints/
+reports/
+
+# Editors and operating systems
+.DS_Store
+.idea/
+.vscode/
