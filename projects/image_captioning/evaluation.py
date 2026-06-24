@@ -28,6 +28,7 @@ def load_caption_checkpoint(path: str | Path,
         num_layers=config.get('num_layers', 1),
         freeze_encoder=config.get('freeze_encoder', True),
         pretrained_encoder=False,
+        dropout=config.get('dropout', 0.0),
     )
     model.load_state_dict(checkpoint['model_state_dict'])
     model.to(device)
@@ -144,4 +145,3 @@ def rouge_l_f1(references: list[list[list[str]]],
             best_score = max(best_score, score)
         scores.append(best_score)
     return sum(scores) / len(scores)
-

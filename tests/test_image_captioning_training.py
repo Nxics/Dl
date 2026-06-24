@@ -7,6 +7,9 @@ from torch import nn
 from torch.utils.data import DataLoader, TensorDataset
 
 from projects.image_captioning.training import (
+    EarlyStopping,
+    TrainingConfig,
+    make_plateau_scheduler,
     run_caption_epoch,
     save_caption_checkpoint,
 )
@@ -83,3 +86,24 @@ class TestTraining(unittest.TestCase):
             self.assertIn('vocabulary', checkpoint)
             self.assertEqual(checkpoint['epoch'], 1)
 
+    def test_when_early_stopping_patience_is_reached_then_stops(self):
+        # Arrange
+        stopper = EarlyStopping(patience=2, min_delta=0.01)
+
+        # Act / Assert
+        self.assertFalse(stopper.step(2.0))
+        self.assertFalse(stopper.step(1.995))
+        self.assertTrue(stopper.step(1.994))
+
+    def test_when_scheduler_created_then_uses_training_config(self):
+        # Arrange
+        model = TinyCaptionModel(vocab_size=6)
+        optimizer = torch.optim.Adam(model.parameters())
+        config = TrainingConfig(scheduler_factor=0.25, scheduler_patience=3)
+
+        # Act
+        scheduler = make_plateau_scheduler(optimizer, config)
+
+        # Assert
+        self.assertEqual(scheduler.factor, 0.25)
+        self.assertEqual(scheduler.patience, 3)

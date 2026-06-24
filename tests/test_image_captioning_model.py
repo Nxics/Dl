@@ -50,3 +50,16 @@ class TestLstmDecoder(unittest.TestCase):
 
         # Assert
         self.assertEqual(tuple(logits.shape), (2, 5, 20))
+
+    def test_when_two_layer_decoder_created_then_dropout_is_enabled(self):
+        # Arrange / Act
+        decoder = LstmDecoder(
+            vocab_size=20,
+            embed_size=8,
+            hidden_size=16,
+            num_layers=2,
+            dropout=0.3,
+        )
+
+        # Assert
+        self.assertEqual(decoder.lstm.dropout, 0.3)

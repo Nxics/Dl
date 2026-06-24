@@ -76,7 +76,8 @@ class CaptioningModel(nn.Module):
                  hidden_size: int = 512,
                  num_layers: int = 1,
                  freeze_encoder: bool = True,
-                 pretrained_encoder: bool = True) -> None:
+                 pretrained_encoder: bool = True,
+                 dropout: float = 0.0) -> None:
         super().__init__()
         self.encoder = VggEncoder(embed_size=embed_size,
                                   freeze=freeze_encoder,
@@ -84,7 +85,8 @@ class CaptioningModel(nn.Module):
         self.decoder = LstmDecoder(vocab_size=vocab_size,
                                    embed_size=embed_size,
                                    hidden_size=hidden_size,
-                                   num_layers=num_layers)
+                                   num_layers=num_layers,
+                                   dropout=dropout)
 
     def forward(self,
                 images_or_backbone_features: torch.Tensor,
